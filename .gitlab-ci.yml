@@ -35,7 +35,7 @@ test:
   script:
     - docker run --name $TEST_CONTAINER_NAME -d $IMAGE
     - sleep 5
-    - docker run --rm --link $TEST_CONTAINER_NAME:app nixery.dev/curl curl -sSL app
+    - docker run --rm --link $TEST_CONTAINER_NAME nixery.dev/curl curl -sSL $TEST_CONTAINER_NAME
   after_script:
     - docker stop $TEST_CONTAINER_NAME
     - docker rm $TEST_CONTAINER_NAME
