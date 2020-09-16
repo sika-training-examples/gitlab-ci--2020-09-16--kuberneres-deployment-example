@@ -60,6 +60,8 @@ deploy dev:
 stop dev:
   stage: deploy dev
   when: manual
+  variables:
+    GIT_STRATEGY: none
   script:
     - helm uninstall $DEPLOY_NAME
   environment:
