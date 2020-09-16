@@ -2,6 +2,7 @@ image: ondrejsika/ci
 
 variables:
   IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
+  TEST_CONTAINER_NAME: test-$CI_JOB_ID
 
 stages:
   - lint
@@ -28,3 +29,13 @@ build:
     - docker login $CI_REGISTRY -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
     - docker build -t $IMAGE .
     - docker push $IMAGE
+
+test:
+  stage: test
+  script:
+    - docker run --name $TEST_CONTAINER_NAME -d $IMAGE
+    - sleep 5
+    - docker run --rm --link $TEST_CONTAINER_NAME:app nixery.dev/curl curl -sSL app
+  after_script:
+    - docker stop $TEST_CONTAINER_NAME
+    - docker rm $TEST_CONTAINER_NAME
