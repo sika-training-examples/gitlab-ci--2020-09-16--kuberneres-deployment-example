@@ -71,7 +71,7 @@ deploy prod:
   script:
     - helm repo add ondrejsika https://helm.oxs.cz
     - helm upgrade --install
-      ondrejsika/one-image
+      example-prod ondrejsika/one-image
       --set image=$IMAGE
       --set host=prod.$BASE_DOMAIN
   environment:
