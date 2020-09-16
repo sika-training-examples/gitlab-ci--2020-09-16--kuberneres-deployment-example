@@ -1,0 +1,20 @@
+image: ondrejsika/ci
+
+stages:
+  - lint
+  - build
+  - test
+  - deploy dev
+  - deploy prod
+
+go format check:
+  image: golang:1.14
+  stage: lint
+  script:
+    - diff -u <(echo -n) <(gofmt -d ./)
+
+editorconfig check:
+  image: mstruebing/editorconfig-checker
+  stage: lint
+  script:
+    - ec
