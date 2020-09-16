@@ -59,6 +59,7 @@ deploy dev:
 
 stop dev:
   stage: deploy dev
+  when: manual
   script:
     - helm uninstall $DEPLOY_NAME
   environment:
