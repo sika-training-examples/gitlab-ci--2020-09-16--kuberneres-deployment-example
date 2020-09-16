@@ -77,3 +77,5 @@ deploy prod:
   environment:
     name: prod
     url: https://prod.$BASE_DOMAIN
+  only:
+    - master
