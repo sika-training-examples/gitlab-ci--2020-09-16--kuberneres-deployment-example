@@ -33,9 +33,11 @@ build:
 test:
   stage: test
   script:
-    - docker run --name $TEST_CONTAINER_NAME -d $IMAGE
+    - docker network create $TEST_CONTAINER_NAME
+    - docker run --name $TEST_CONTAINER_NAME --net $TEST_CONTAINER_NAME -d $IMAGE
     - sleep 5
-    - docker run --rm --link $TEST_CONTAINER_NAME nixery.dev/curl curl -sSL $TEST_CONTAINER_NAME
+    - docker run --rm --net $TEST_CONTAINER_NAME nixery.dev/curl curl -sSL $TEST_CONTAINER_NAME
   after_script:
     - docker stop $TEST_CONTAINER_NAME
     - docker rm $TEST_CONTAINER_NAME
+    - docker network rm $TEST_CONTAINER_NAME
