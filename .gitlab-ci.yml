@@ -3,6 +3,7 @@ image: ondrejsika/ci
 variables:
   IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
   TEST_CONTAINER_NAME: test-$CI_JOB_ID
+  DEPLOY_NAME: $CI_PROJECT_PATH_SLUG-$CI_COMMIT_REF_SLUG
 
 stages:
   - lint
@@ -41,3 +42,15 @@ test:
     - docker stop $TEST_CONTAINER_NAME
     - docker rm $TEST_CONTAINER_NAME
     - docker network rm $TEST_CONTAINER_NAME
+
+deploy dev:
+  stage: deploy dev
+  script:
+    - helm repo add ondrejsika https://helm.oxs.cz
+    - helm upgrade --install
+      $DEPLOY_NAME ondrejsika/one-image
+      --set image=$IMAGE
+      --set host=$DEPLOY_NAME.$BASE_DOMAIN
+  environment:
+    name: dev/$CI_COMMIT_REF_SLUG
+    url: https://$DEPLOY_NAME.$BASE_DOMAIN
