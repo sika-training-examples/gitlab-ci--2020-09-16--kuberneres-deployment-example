@@ -54,7 +54,7 @@ deploy dev:
       --set host=$DEPLOY_NAME.$BASE_DOMAIN
   environment:
     name: dev/$CI_COMMIT_REF_SLUG
-    url: https://$DEPLOY_NAME.$BASE_DOMAIN
+    url: https://example-$CI_COMMIT_REF_SLUG.$BASE_DOMAIN
     on_stop: stop dev
 
 stop dev:
